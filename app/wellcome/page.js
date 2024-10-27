@@ -36,7 +36,7 @@ const HEALTH_APPS = [
     href: '/medichat', // Ruta a la página correspondiente
   },
   {
-    title: 'DermaAI',
+    title: 'DermaAI Bot',
     description: 'Analiza Erupciones Cutaneas con AI.',
     imageUrl: '/img/analisis-piel.jpeg',
     href: '/dermaaI', // Ruta a la página correspondiente

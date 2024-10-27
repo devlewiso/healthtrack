@@ -3,6 +3,7 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, IconButton, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import Link from 'next/link'; // Importa Link de next/link
 import '../styles/Header.css'; // Asegúrate de que la ruta sea correcta
 
 const Header = () => {
@@ -20,9 +21,10 @@ const Header = () => {
     <AppBar position="sticky" color="primary">
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          <a href="/" style={{ color: 'white', textDecoration: 'none' }}>
+          {/* Usa el componente Link en lugar de un elemento <a> */}
+          <Link href="/" style={{ color: 'white', textDecoration: 'none' }}>
             HealthTrack
-          </a>
+          </Link>
         </Typography>
         <IconButton
           edge="start"
@@ -40,22 +42,23 @@ const Header = () => {
           sx={{ display: { xs: 'block', md: 'none' } }}
         >
           <MenuItem onClick={handleMenuClose}>
-            <a href="/wellcome" style={{ textDecoration: 'none', color: 'inherit' }}>Inicio</a>
+            {/* Cambia los elementos <a> por Link */}
+            <Link href="/wellcome" style={{ textDecoration: 'none', color: 'inherit' }}>Inicio</Link>
           </MenuItem>
           <MenuItem onClick={handleMenuClose}>
-            <a href="/about" style={{ textDecoration: 'none', color: 'inherit' }}>Sobre Nosotros</a>
+            <Link href="/about" style={{ textDecoration: 'none', color: 'inherit' }}>Sobre Nosotros</Link>
           </MenuItem>
           <MenuItem onClick={handleMenuClose}>
-            <a href="/contact" style={{ textDecoration: 'none', color: 'inherit' }}>Contacto</a>
+            <Link href="/contact" style={{ textDecoration: 'none', color: 'inherit' }}>Contacto</Link>
           </MenuItem>
         </Menu>
-        <Button color="inherit" sx={{ display: { xs: 'none', md: 'block' } }} href="/wellcome">
+        <Button color="inherit" sx={{ display: { xs: 'none', md: 'block' } }} component={Link} href="/wellcome">
           Inicio
         </Button>
-        <Button color="inherit" sx={{ display: { xs: 'none', md: 'block' } }} href="/about">
+        <Button color="inherit" sx={{ display: { xs: 'none', md: 'block' } }} component={Link} href="/about">
           Sobre Nosotros
         </Button>
-        <Button color="inherit" sx={{ display: { xs: 'none', md: 'block' } }} href="/contact">
+        <Button color="inherit" sx={{ display: { xs: 'none', md: 'block' } }} component={Link} href="/contact">
           Contacto
         </Button>
       </Toolbar>
