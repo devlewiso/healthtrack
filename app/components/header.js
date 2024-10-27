@@ -4,7 +4,7 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, Button, IconButton, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Link from 'next/link'; // Importa Link de next/link
-import '../styles/Header.css'; // Asegúrate de que la ruta sea correcta
+import '../styles/header.css'; // Asegúrate de que la ruta sea correcta
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
