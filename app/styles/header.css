@@ -1,0 +1,56 @@
+/* Estilo global para el body */
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif; /* Puedes cambiar la fuente según tus preferencias */
+  width: 100%; /* Asegura que el body ocupe todo el ancho */
+  height: 100vh; /* Ocupa todo el alto de la ventana */
+  overflow-x: hidden; /* Evita el desbordamiento horizontal */
+}
+
+/* Estilo del AppBar */
+.MuiAppBar-root {
+  z-index: 1201; /* Asegura que el AppBar esté por encima de otros componentes */
+  width: 100%; /* Asegura que el AppBar ocupe todo el ancho */
+}
+
+/* Estilo del enlace en el título */
+.MuiTypography-h6 a {
+  color: white;
+  text-decoration: none;
+}
+
+/* Hover effect for menu items */
+.MuiMenuItem-root:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Efecto hover para los elementos del menú */
+}
+
+/* Estilo de los botones */
+.MuiButton-root {
+  text-transform: none; /* Evita que el texto de los botones esté en mayúsculas */
+}
+
+/* Estilo para el contenedor del header */
+.container-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%; /* Asegura que el contenedor del header ocupe todo el ancho */
+  padding: 0 1rem; /* Añade un poco de espacio horizontal */
+}
+
+/* Resalta el texto del botón cuando está en hover */
+.MuiButton-root:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Cambia el fondo al pasar el mouse */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container-header {
+    flex-direction: column; /* Cambia la dirección del flex en pantallas más pequeñas */
+    align-items: flex-start; /* Alinea los elementos al inicio */
+  }
+
+  .MuiAppBar-root {
+    padding: 0.5rem; /* Espacio adicional en el AppBar en pantallas pequeñas */
+  }
+}

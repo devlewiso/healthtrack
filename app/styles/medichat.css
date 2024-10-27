@@ -1,0 +1,224 @@
+/* Variables CSS para establecer colores y estilos globales */
+:root {
+    /* Colores principales */
+    --primary-color: #2196f3;         /* Color primario */
+    --primary-light: #bbdefb;         /* Color primario claro */
+    --primary-dark: #1976d2;          /* Color primario oscuro */
+    --secondary-color: #64b5f6;       /* Color secundario */
+    
+    /* Colores de texto */
+    --text-primary: #333;             /* Color de texto principal */
+    --text-secondary: #666;            /* Color de texto secundario */
+    
+    /* Colores de fondo */
+    --background-light: #f5f9ff;      /* Color de fondo claro */
+    --background-dark: #fff;           /* Color de fondo oscuro */
+    
+    /* Color de sombra */
+    --shadow-color: rgba(33, 150, 243, 0.1); /* Color de sombra */
+    
+    /* Colores de estado */
+    --error-color: #f44336;           /* Color para errores */
+    --success-color: #4caf50;         /* Color para éxitos */
+    
+    /* Estilos generales */
+    --border-radius: 12px;            /* Radio de borde para redondear esquinas */
+    --transition-speed: 0.3s;          /* Velocidad de las transiciones */
+}
+
+/* Estilos para el contenedor principal de la aplicación */
+.container {
+    min-height: 100vh; /* Mínima altura del contenedor al 100% de la vista */
+    width: 100%; /* Ancho completo */
+    background: linear-gradient(135deg, var(--background-light) 0%, var(--background-dark) 100%); /* Fondo con degradado */
+    padding: 2rem 1rem; /* Relleno interno */
+}
+
+/* Estilos para el contenedor del chat */
+.chat-container {
+    width: 100%; /* Ancho completo */
+    margin: 0 auto; /* Centrado horizontal */
+    background: white; /* Fondo blanco */
+    border-radius: var(--border-radius); /* Radio de borde redondeado */
+    box-shadow: 0 8px 32px var(--shadow-color); /* Sombra del contenedor */
+    padding: 1rem; /* Relleno interno */
+    transition: all var(--transition-speed) ease; /* Transiciones suaves */
+    overflow: hidden; /* Evita desbordamientos */
+}
+
+/* Estilos para el encabezado del chat */
+.chat-header {
+    text-align: center; /* Centrar texto */
+    margin-bottom: 2rem; /* Margen inferior */
+    padding-bottom: 1rem; /* Relleno inferior */
+    border-bottom: 2px solid var(--primary-light); /* Línea inferior */
+}
+
+/* Estilos para el título en el encabezado del chat */
+.chat-header h1 {
+    color: var(--primary-dark); /* Color del texto */
+    font-size: 2.5rem; /* Tamaño de fuente */
+    font-weight: 800; /* Grosor de fuente */
+    margin: 0; /* Sin margen */
+    background: linear-gradient(120deg, var(--primary-color), var(--secondary-color)); /* Degradado de fondo */
+    -webkit-background-clip: text; /* Clip de fondo para el texto */
+    -webkit-text-fill-color: transparent; /* Relleno del texto transparente */
+}
+
+/* Estilos para el formulario de chat */
+.chat-form {
+    display: flex; /* Uso de Flexbox */
+    flex-direction: column; /* Dirección de columna */
+    gap: 1rem; /* Espacio entre elementos */
+    margin-bottom: 2rem; /* Margen inferior */
+    width: 100%; /* Ancho completo para el formulario */
+}
+
+/* Estilos para el contenedor de entrada */
+.input-container {
+    position: relative; /* Posicionamiento relativo */
+}
+
+/* Estilos para el campo de entrada del chat */
+.chat-input {
+    width: 100%; /* Asegura que el campo de entrada ocupe todo el ancho */
+    padding: 1rem 1.5rem; /* Relleno interno */
+    border: 2px solid var(--primary-light); /* Borde del campo */
+    border-radius: var(--border-radius); /* Radio de borde */
+    font-size: 1rem; /* Tamaño de fuente */
+    transition: all var(--transition-speed) ease; /* Transiciones suaves */
+    background: var(--background-light); /* Color de fondo */
+    color: var(--text-primary); /* Color de texto */
+    box-sizing: border-box; /* Incluye borde y relleno en el ancho total */
+}
+
+/* Estilos para el campo de entrada en foco */
+.chat-input:focus {
+    outline: none; /* Sin contorno */
+    border-color: var(--primary-color); /* Color del borde en foco */
+    box-shadow: 0 0 0 4px var(--shadow-color); /* Sombra en foco */
+}
+
+/* Estilos para el botón de envío */
+.submit-button {
+    width: 100%; /* Asegura que el botón ocupe todo el ancho */
+    padding: 1rem 2rem; /* Relleno interno */
+    border: none; /* Sin borde */
+    border-radius: var(--border-radius); /* Radio de borde */
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); /* Degradado de fondo */
+    color: white; /* Color del texto */
+    font-size: 1rem; /* Tamaño de fuente */
+    font-weight: 600; /* Grosor de fuente */
+    cursor: pointer; /* Cambia el cursor a mano */
+    transition: all var(--transition-speed) ease; /* Transiciones suaves */
+    text-transform: uppercase; /* Texto en mayúsculas */
+    letter-spacing: 1px; /* Espaciado entre letras */
+}
+
+/* Estilos para el botón de envío al pasar el mouse */
+.submit-button:hover {
+    transform: translateY(-2px); /* Levanta el botón */
+    box-shadow: 0 4px 12px var(--shadow-color); /* Sombra en hover */
+}
+
+/* Estilos para el botón de envío al hacer clic */
+.submit-button:active {
+    transform: translateY(0); /* Restablece posición al hacer clic */
+}
+
+/* Estilos para el contenedor de respuesta */
+.response-container {
+    margin-top: 2rem; /* Margen superior */
+    padding: 1.5rem; /* Relleno interno */
+    background: var(--background-light); /* Color de fondo */
+    border-radius: var(--border-radius); /* Radio de borde */
+    border-left: 4px solid var(--primary-color); /* Borde izquierdo */
+    transition: all var(--transition-speed) ease; /* Transiciones suaves */
+}
+
+/* Estilos para el título de respuesta */
+.response-title {
+    color: var(--primary-dark); /* Color del texto */
+    font-size: 1.2rem; /* Tamaño de fuente */
+    font-weight: 600; /* Grosor de fuente */
+    margin-bottom: 1rem; /* Margen inferior */
+}
+
+/* Estilos para el texto de respuesta */
+.response-text {
+    color: var(--text-secondary); /* Color del texto */
+    line-height: 1.6; /* Altura de línea */
+    font-size: 1rem; /* Tamaño de fuente */
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0; /* Comienza invisible */
+        transform: translateY(10px); /* Se mueve hacia abajo */
+    }
+    to {
+        opacity: 1; /* Se vuelve visible */
+        transform: translateY(0); /* Se mueve a su posición original */
+    }
+}
+
+/* Animación para el contenedor de respuesta */
+.response-container {
+    animation: fadeIn 0.5s ease-out; /* Aparece con animación */
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    /* Ajustes para pantallas pequeñas */
+    .chat-container {
+        padding: 1.5rem; /* Relleno interno reducido */
+    }
+
+    .chat-header h1 {
+        font-size: 2rem; /* Tamaño de fuente reducido */
+    }
+
+    .submit-button {
+        padding: 0.8rem 1.5rem; /* Relleno interno reducido */
+    }
+
+    .chat-input {
+        font-size: 0.9rem; /* Tamaño de fuente reducido para entradas en pantallas pequeñas */
+    }
+}
+
+/* Estado de carga */
+.loading {
+    display: inline-block; /* Muestra como bloque en línea */
+    width: 20px; /* Ancho del spinner */
+    height: 20px; /* Alto del spinner */
+    border: 3px solid var(--primary-light); /* Borde del spinner */
+    border-radius: 50%; /* Bordes redondeados */
+    border-top-color: var(--primary-color); /* Color de la parte superior */
+    animation: spin 0.6s linear infinite; /* Animación de giro */
+}
+
+/* Animación para el spinner */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg); /* Comienza en 0 grados */
+    }
+    100% {
+        transform: rotate(360deg); /* Rota 360 grados */
+    }
+}
+
+/* Sección de consultas médicas */
+.medical-query {
+    margin-top: 1rem; /* Margen superior para separación */
+    padding: 1rem; /* Relleno interno */
+    border-radius: var(--border-radius); /* Radio de borde */
+    background: var(--primary-light); /* Fondo claro */
+}
+
+/* Estilos de texto para consultas médicas */
+.medical-query p {
+    margin: 0; /* Sin margen */
+    color: var(--text-primary); /* Color del texto */
+}
