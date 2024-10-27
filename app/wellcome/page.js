@@ -25,18 +25,21 @@ import Link from 'next/link'; // Importa Link de Next.js
 const HEALTH_APPS = [
   {
     title: 'App PesoSalud',
-    description: "PesoSalud: Tu compañero de salud personal que calcula tu peso y te proporciona tu masa corporal de forma rápida y sencilla",
+    description: "PesoSalud: Tu compañero de salud personal que calcula tu peso y te proporciona tu masa corporal de forma rápida y sencilla.",
     imageUrl: '/img/pesoSalud.jpg',
+    href: '/calculator', // Ruta a la página correspondiente
   },
   {
     title: 'Medichat',
     description: 'Medichat: Comunícate con profesionales de la salud y recibe asesoramiento médico en tiempo real.',
     imageUrl: '/img/medichat.jpeg', // Asegúrate de que la imagen exista
+    href: '/medichat', // Ruta a la página correspondiente
   },
   {
     title: 'DermaAI',
     description: 'Analiza Erupciones Cutaneas con AI.',
     imageUrl: '/img/analisis-piel.jpeg',
+    href: '/dermaaI', // Ruta a la página correspondiente
   },
 ];
 
@@ -137,7 +140,7 @@ const HeroSection = () => (
   </Box>
 );
 
-const AppCard = ({ title, description, imageUrl }) => (
+const AppCard = ({ title, description, imageUrl, href }) => (
   <Card 
     sx={{ 
       height: '100%',
@@ -175,15 +178,15 @@ const AppCard = ({ title, description, imageUrl }) => (
       >
         {description}
       </Typography>
-      {/* Cambiar el botón a un Link */}
-      <Link href="/medichat" passHref>
+      {/* Botón independiente para cada título */}
+      <Link href={href} passHref>
         <Button 
           variant="contained" 
           color="primary" 
           fullWidth
           sx={{ mt: 'auto' }}
         >
-          Ver Más
+          Ir a {title}
         </Button>
       </Link>
     </CardContent>
@@ -260,7 +263,7 @@ const InfoSection = () => (
 export default function HealthAppLandingPage() {
   return (
     <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
-      <Container maxWidth="lg" sx={{ py: 8 }}> {/* Cambiar a maxWidth="lg" para centrar el contenido */}
+      <Container maxWidth="lg" sx={{ py: 8 }}>
         <HeroSection />
 
         <Typography 
@@ -272,7 +275,7 @@ export default function HealthAppLandingPage() {
         >
           Descubre Nuestras Apps de Salud
         </Typography>
-        <Grid container spacing={4} sx={{ mb: 8 }} justifyContent="center"> {/* Agregar justifyContent="center" */}
+        <Grid container spacing={4} sx={{ mb: 8 }} justifyContent="center">
           {HEALTH_APPS.map((app, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <AppCard {...app} />
@@ -291,7 +294,7 @@ export default function HealthAppLandingPage() {
         >
           ¿Por qué tener Apps de Salud?
         </Typography>
-        <Grid container spacing={4} justifyContent="center"> {/* Agregar justifyContent="center" */}
+        <Grid container spacing={4} justifyContent="center">
           {HEALTH_FEATURES.map((feature, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <FeatureCard {...feature} />
