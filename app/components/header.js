@@ -18,7 +18,7 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="sticky" color="primary">
+    <AppBar position="sticky" color="primary" suppressHydrationWarning>
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           {/* Usa el componente Link en lugar de un elemento <a> */}
