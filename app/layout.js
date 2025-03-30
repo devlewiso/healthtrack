@@ -1,4 +1,5 @@
 import Header from './components/header'; // Asegúrate de que la ruta sea correcta
+import SubHeader from './components/subheader';
 
 export default function RootLayout({ children }) {
   return (
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
         <meta property="og:url" content="https://healthtrackfit.netlify.app/" />
       </head>
       <body>
+        <SubHeader />
         <Header /> {/* Aquí se agrega el Header */}
         {children}
       </body>

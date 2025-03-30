@@ -36,19 +36,33 @@ const WelcomePage = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#f9f9f9',
+        backgroundImage: `url('/img/background.jpg')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         textAlign: 'center',
         padding: '2rem',
         animation: visible ? `${slideIn} 0.5s ease-out` : 'none',
       }}
     >
-      <Typography variant="h2" gutterBottom>
+      <Typography variant="h2" gutterBottom sx={{ color: 'white', textShadow: '1px 1px 2px blue, -1px -1px 2px black, 1px -1px 2px white, -1px 1px 2px black' }}>
         Bienvenido a Nuestras Apps de Salud
       </Typography>
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h5" gutterBottom sx={{ color: 'white', textShadow: '1px 1px 2px blue, -1px -1px 2px black, 1px -1px 2px white, -1px 1px 2px black' }}>
         Controla tu salud de manera fácil y efectiva con nuestras herramientas diseñadas especialmente para ti.
       </Typography>
-      
+      <Button 
+        variant="contained" 
+        color="primary" 
+        onClick={handleGetStarted}
+        sx={{
+          mt: 2,
+          textTransform: 'none',
+          fontSize: '1.2rem',
+          fontWeight: 'bold',
+        }}
+      >
+        Iniciar
+      </Button>
     </Box>
   );
 };
