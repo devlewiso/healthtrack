@@ -80,10 +80,8 @@ const HeroSection = () => (
   <Box 
     sx={{ 
       position: 'relative', 
-      mb: 8, 
-      pt: 2,
-      height: 600,
-      borderRadius: 2,
+      width: '100%',
+      height: { xs: 400, sm: 500, md: 600 },
       overflow: 'hidden',
       backgroundAttachment: 'fixed',
       backgroundPosition: 'center',
@@ -162,6 +160,8 @@ const AppCard = ({ title, description, imageUrl, href }) => (
       flexDirection: 'column',
       transition: 'all 0.3s ease-in-out',
       '&:hover': {
+        backgroundColor: '#1976d2',
+        color: 'white',
         transform: 'translateY(-8px)',
         boxShadow: '0 10px 20px rgba(0,0,0,0.2)',
       },
@@ -262,45 +262,50 @@ const InfoSection = () => (
   <Paper
     sx={{
       bgcolor: 'primary.light',
-      p: 4,
-      borderRadius: 2,
-      mb: 8,
+      p: 0,
+      borderRadius: 0,
+      width: '100%',
     }}
   >
-    <Grid container spacing={4} alignItems="center">
-      <Grid item xs={12} md={6}>
-        <CardMedia
-          component="img"
-          image="/img/health.jpg"
-          alt="Salud y bienestar"
-          sx={{
-            width: '100%',
-            borderRadius: 2,
-            height: 400,
-            objectFit: 'cover',
-          }}
-        />
+    <Container maxWidth="xl">
+      <Grid container spacing={0} alignItems="center">
+        <Grid item xs={12} md={6} sx={{ p: 0 }}>
+          <CardMedia
+            component="img"
+            image="/img/health.jpg"
+            alt="Salud y bienestar"
+            sx={{
+              width: '100%',
+              height: { xs: 300, md: 500 },
+              objectFit: 'cover',
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} md={6} sx={{ p: { xs: 4, md: 8 } }}>
+          <Typography variant="h4" gutterBottom fontWeight="bold">
+            Cuida tu salud con tecnología
+          </Typography>
+          <Typography variant="body1">
+            Nuestras apps de salud están diseñadas para ayudarte a mantener un estilo de vida saludable
+            de manera fácil y efectiva. Con herramientas intuitivas y seguimiento personalizado,
+            alcanzar tus objetivos de salud nunca había sido tan sencillo.
+          </Typography>
+        </Grid>
       </Grid>
-      <Grid item xs={12} md={6}>
-        <Typography variant="h4" gutterBottom fontWeight="bold">
-          Cuida tu salud con tecnología
-        </Typography>
-        <Typography variant="body1">
-          Nuestras apps de salud están diseñadas para ayudarte a mantener un estilo de vida saludable
-          de manera fácil y efectiva. Con herramientas intuitivas y seguimiento personalizado,
-          alcanzar tus objetivos de salud nunca había sido tan sencillo.
-        </Typography>
-      </Grid>
-    </Grid>
+    </Container>
   </Paper>
 );
 
 export default function HealthAppLandingPage() {
   return (
     <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+      {/* Hero Section - Full Width */}
+      <Box sx={{ width: '100%' }}>
         <HeroSection />
+      </Box>
 
+      {/* Apps Section */}
+      <Box sx={{ py: 8, width: '100%' }}>
         <Typography 
           variant="h3" 
           align="center" 
@@ -310,16 +315,24 @@ export default function HealthAppLandingPage() {
         >
           Descubre Nuestras Apps de Salud
         </Typography>
-        <Grid container spacing={4} sx={{ mb: 8 }} justifyContent="center">
-          {HEALTH_APPS.map((app, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <AppCard {...app} />
-            </Grid>
-          ))}
-        </Grid>
+        <Container>
+          <Grid container spacing={4} sx={{ mb: 8 }} justifyContent="center">
+            {HEALTH_APPS.map((app, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <AppCard {...app} />
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
 
+      {/* Info Section - Full Width */}
+      <Box sx={{ width: '100%', mb: 8 }}>
         <InfoSection />
+      </Box>
 
+      {/* Features Section */}
+      <Box sx={{ py: 8, width: '100%' }}>
         <Typography 
           variant="h3" 
           align="center" 
@@ -329,14 +342,16 @@ export default function HealthAppLandingPage() {
         >
           ¿Por qué tener Apps de Salud?
         </Typography>
-        <Grid container spacing={4} justifyContent="center">
-          {HEALTH_FEATURES.map((feature, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <FeatureCard {...feature} />
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+        <Container>
+          <Grid container spacing={4} justifyContent="center">
+            {HEALTH_FEATURES.map((feature, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <FeatureCard {...feature} />
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
     </Box>
   );
 }

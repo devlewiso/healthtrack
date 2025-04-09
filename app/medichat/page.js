@@ -36,6 +36,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TimerIcon from '@mui/icons-material/Timer';
 import LockIcon from '@mui/icons-material/Lock';
+import PromptChat from '../components/promptChat'; // Importamos el componente PromptChat
 
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
@@ -78,6 +79,7 @@ export default function MediChat() {
   const [error, setError] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
+  const [showPrompts, setShowPrompts] = useState(true); // Nuevo estado para mostrar/ocultar prompts
   
   // Estados para el límite de consultas
   const [queryCount, setQueryCount] = useState(0);
@@ -133,6 +135,11 @@ export default function MediChat() {
     setError('');
   };
 
+  // Función para manejar la selección de un prompt
+  const handleSelectPrompt = (promptText) => {
+    setInput(promptText);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!input.trim() || isLocked) return;
@@ -160,9 +167,23 @@ export default function MediChat() {
     });
 
     try {
-      const result = await chatSession.sendMessage(
-        `Actúa como un asistente médico virtual profesional. Responde a la siguiente consulta de manera informativa, clara y útil, pero siempre recordando que no eres un médico real y que el usuario debe consultar con un profesional de la salud para diagnósticos o tratamientos. Proporciona respuestas breves y directas. La consulta es: ${userMessage}`
-      );
+      const prompt = `
+        Actúa como un asistente médico virtual profesional llamado MediChat. 
+        
+        INSTRUCCIONES IMPORTANTES:
+        1. Responde a la consulta médica de manera clara, concisa y directa.
+        2. Proporciona información médica basada en evidencia.
+        3. Incluye posibles causas del síntoma o condición.
+        4. Sugiere pasos básicos que el usuario podría seguir.
+        5. SIEMPRE termina con un recordatorio de consultar a un profesional médico.
+        6. Mantén las respuestas breves y estructuradas (máximo 4-5 oraciones).
+        7. No uses lenguaje excesivamente técnico.
+        8. No repitas la consulta del usuario.
+        
+        La consulta del usuario es: ${userMessage}
+      `;
+      
+      const result = await chatSession.sendMessage(prompt);
       
       const responseText = result.response.text();
       
@@ -172,7 +193,7 @@ export default function MediChat() {
       localStorage.setItem('mediChatQueryCount', newCount.toString());
       
       // Agregar a la conversación actual
-      setConversations(prev => [...prev, { type: 'assistant', text: responseText }]);
+      setConversations(prev => [...prev, { type: 'ai', text: responseText }]);
       
       // Guardar en el historial
       const newChat = {
@@ -200,7 +221,7 @@ export default function MediChat() {
   const loadChatFromHistory = (chat) => {
     setConversations([
       { type: 'user', text: chat.query },
-      { type: 'assistant', text: chat.response }
+      { type: 'ai', text: chat.response }
     ]);
     setShowHistory(false);
   };
@@ -211,66 +232,86 @@ export default function MediChat() {
 
   return (
     <Box 
-      sx={{ 
+      sx={{
         width: '100%', 
         minHeight: '100vh',
-        bgcolor: theme.palette.background.paper,
-        pt: 10, // Añadir padding top para bajar el contenido
+        bgcolor: '#ffffff', // Restaurar el fondo blanco
+        pt: 3, // Mantener el padding top reducido
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth={false} sx={{ py: { xs: 2, sm: 3 }, px: { xs: 2, sm: 3, md: 4 } }}>
         {/* Encabezado */}
-        <Box sx={{ textAlign: 'center', mb: 6 }}>
+        <Box sx={{ textAlign: 'center', mb: { xs: 1, sm: 2 } }}>
           <Typography 
-            variant="h2" 
+            variant="h3" 
             component="h1" 
             gutterBottom 
             fontWeight="bold"
             sx={{ 
-              color: theme.palette.primary.main,
+              color: '#1976d2', // Color azul para el título
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 2
+              gap: 1,
+              fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
+              mb: 1
             }}
           >
-            <ChatIcon fontSize="large" />
+            <ChatIcon sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' } }} />
             MediChat
           </Typography>
-          <Typography variant="h5" color="text.secondary" gutterBottom>
+          <Typography variant="h6" sx={{ mb: { xs: 0.5, sm: 1 }, color: '#555', fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' } }}>
             Tu asistente médico virtual con IA
           </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, flexWrap: 'wrap', mb: 1 }}>
             <Chip 
               label="Consulta Médica Virtual" 
               color="primary" 
-              variant="outlined" 
+              variant="filled" 
               icon={<MedicalServicesIcon />} 
+              size="small"
+              sx={{ 
+                fontSize: { xs: '0.7rem', sm: '0.8rem' },
+                backgroundColor: '#ffffff',
+                color: '#1976d2',
+                fontWeight: 'bold',
+                '& .MuiChip-icon': { color: '#1976d2' }
+              }}
             />
             <Chip 
               label={isLocked ? `Bloqueado (${timeRemaining})` : `${MAX_QUERIES - queryCount} consultas restantes`}
               color={isLocked ? "error" : "success"}
               icon={isLocked ? <LockIcon /> : <TimerIcon />}
+              size="small"
+              sx={{ 
+                fontSize: { xs: '0.7rem', sm: '0.8rem' },
+                fontWeight: 'bold',
+                backgroundColor: isLocked ? '#ffffff' : '#ffffff',
+                color: isLocked ? '#d32f2f' : '#2e7d32',
+                '& .MuiChip-icon': { color: isLocked ? '#d32f2f' : '#2e7d32' }
+              }}
             />
           </Box>
         </Box>
 
-        <Grid container spacing={4}>
+        <Grid container spacing={2}>
           {/* Panel Principal */}
           <Grid item xs={12} md={8}>
             {isLocked ? (
               <Paper 
                 elevation={3} 
                 sx={{ 
-                  p: 4, 
+                  p: 3, 
                   borderRadius: 2,
                   textAlign: 'center',
-                  mb: 4,
-                  minHeight: 600,
                   display: 'flex',
                   flexDirection: 'column',
+                  alignItems: 'center',
                   justifyContent: 'center',
-                  alignItems: 'center'
+                  gap: 2,
+                  height: 'auto',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #e0e0e0'
                 }}
               >
                 <LockIcon sx={{ fontSize: 60, color: theme.palette.error.main, mb: 2 }} />
@@ -310,11 +351,13 @@ export default function MediChat() {
               <Paper 
                 elevation={3} 
                 sx={{ 
-                  p: 4, 
+                  p: 3, 
                   borderRadius: 2,
-                  minHeight: 600,
                   display: 'flex',
-                  flexDirection: 'column'
+                  flexDirection: 'column',
+                  height: 'auto',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #e0e0e0'
                 }}
               >
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
@@ -322,13 +365,15 @@ export default function MediChat() {
                     Consulta Médica
                   </Typography>
                   <Button 
-                    variant="outlined" 
+                    variant="contained" 
                     color="primary" 
                     size="small"
                     onClick={startNewChat}
                     disabled={conversations.length === 0}
+                    startIcon={<ChatIcon />}
+                    sx={{ borderRadius: '20px' }}
                   >
-                    Nueva Consulta
+                    NUEVA CONSULTA
                   </Button>
                 </Box>
 
@@ -344,8 +389,8 @@ export default function MediChat() {
                     p: 2,
                     bgcolor: theme.palette.background.default,
                     borderRadius: 1,
-                    minHeight: 300,
-                    maxHeight: 400
+                    height: 'auto',
+                    flex: 1
                   }}
                 >
                   {conversations.length === 0 ? (
@@ -357,9 +402,11 @@ export default function MediChat() {
                       height: '100%',
                       opacity: 0.7
                     }}>
-                      <MedicalServicesIcon sx={{ fontSize: 60, color: theme.palette.primary.main, mb: 2 }} />
-                      <Typography variant="body1" color="textSecondary" align="center">
+                      <Typography variant="body1" color="textSecondary" align="center" gutterBottom>
                         Haz una consulta médica y recibe orientación basada en IA
+                      </Typography>
+                      <Typography variant="body2" color="error.main" align="center" sx={{ maxWidth: '80%', mx: 'auto' }}>
+                        Recuerda: Esta información es solo orientativa. Siempre consulta a un profesional médico para un diagnóstico adecuado.
                       </Typography>
                     </Box>
                   ) : (
@@ -379,11 +426,45 @@ export default function MediChat() {
                             color: msg.type === 'user' ? theme.palette.primary.contrastText : 'inherit',
                             borderRadius: 2,
                             borderTopRightRadius: msg.type === 'user' ? 0 : 2,
-                            borderTopLeftRadius: msg.type === 'user' ? 2 : 0
+                            borderTopLeftRadius: msg.type === 'user' ? 2 : 0,
+                            ...(msg.type === 'ai' && {
+                              className: 'chat-response',
+                              borderLeft: `4px solid ${theme.palette.primary.main}`
+                            })
                           }}
+                          className={msg.type === 'ai' ? 'chat-response' : ''}
                         >
-                          <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>
-                            {msg.text}
+                          <Typography 
+                            variant="body1" 
+                            sx={{ 
+                              whiteSpace: 'pre-line',
+                              '& ul': { pl: 2, mb: 1 },
+                              '& li': { mb: 0.5 },
+                              '& strong': { color: msg.type === 'user' ? 'inherit' : theme.palette.primary.dark, fontWeight: 600 }
+                            }}
+                            dangerouslySetInnerHTML={msg.type === 'ai' ? { 
+                              __html: msg.text
+                                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                // Procesar listas
+                                .split('\n').map(line => {
+                                  if (line.trim().startsWith('* ')) {
+                                    return '<li>' + line.trim().substring(2) + '</li>';
+                                  }
+                                  return line;
+                                }).join('\n')
+                                // Agrupar elementos de lista en un <ul>
+                                .replace(/(<li>.*?<\/li>(\n|$))+/g, match => {
+                                  return '<ul>' + match + '</ul>';
+                                })
+                                // Limpiar posibles saltos de línea dentro de las listas
+                                .replace(/<\/li>\n<li>/g, '</li><li>')
+                                // Reemplazar saltos de línea dobles por <br>
+                                .replace(/\n\n/g, '<br/><br/>')
+                                // Reemplazar saltos de línea simples por <br> si no están dentro de listas
+                                .replace(/\n(?!<\/ul>|<ul>|<li>)/g, '<br/>')
+                            } : undefined}
+                          >
+                            {msg.type === 'user' ? msg.text : null}
                           </Typography>
                         </Paper>
                       </Box>
@@ -452,31 +533,99 @@ export default function MediChat() {
           {/* Panel Lateral */}
           <Grid item xs={12} md={4}>
             <Paper 
-              elevation={3} 
+              elevation={2} 
               sx={{ 
-                p: 4, 
+                p: 3, 
                 borderRadius: 2,
-                height: '100%',
-                minHeight: 600,
+                height: 'auto',
                 display: 'flex',
-                flexDirection: 'column'
+                flexDirection: 'column',
+                overflow: 'auto',
+                backgroundColor: '#ffffff',
+                border: '1px solid #e0e0e0'
               }}
             >
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-                <Typography variant="h5" component="h2" fontWeight="bold">
-                  Historial
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Typography variant="h6" fontWeight="medium" sx={{ 
+                  fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' } 
+                }}>
+                  {showHistory ? 'Historial' : showPrompts ? 'Consultas Rápidas' : 'Información'}
                 </Typography>
-                <Button 
-                  variant="outlined" 
-                  color="primary" 
-                  size="small"
-                  onClick={() => setShowHistory(!showHistory)}
-                  startIcon={<HistoryIcon />}
-                >
-                  {showHistory ? 'Ocultar' : 'Ver'}
-                </Button>
+                <Box sx={{ 
+                  display: 'flex', 
+                  gap: { xs: 0.25, sm: 0.5 }, 
+                  flexWrap: 'wrap',
+                  justifyContent: 'flex-end',
+                  maxWidth: { xs: '180px', sm: '220px', md: '300px' }
+                }}>
+                  <Button 
+                    variant={showPrompts ? "contained" : "outlined"}
+                    size="small"
+                    onClick={() => {
+                      setShowPrompts(true);
+                      setShowHistory(false);
+                    }}
+                    startIcon={<ChatIcon fontSize="small" />}
+                    sx={{ 
+                      borderRadius: '20px',
+                      minWidth: { xs: '70px', sm: '80px' },
+                      fontSize: { xs: '0.65rem', sm: '0.75rem' },
+                      py: { xs: 0.3, sm: 0.5 },
+                      px: { xs: 0.5, sm: 1 },
+                      '& .MuiButton-startIcon': {
+                        marginRight: { xs: 2, sm: 4 }
+                      }
+                    }}
+                  >
+                    Prompts
+                  </Button>
+                  <Button 
+                    variant={showHistory ? "contained" : "outlined"}
+                    size="small"
+                    onClick={() => {
+                      setShowHistory(true);
+                      setShowPrompts(false);
+                    }}
+                    startIcon={<HistoryIcon fontSize="small" />}
+                    sx={{ 
+                      borderRadius: '20px',
+                      minWidth: { xs: '70px', sm: '80px' },
+                      fontSize: { xs: '0.65rem', sm: '0.75rem' },
+                      py: { xs: 0.3, sm: 0.5 },
+                      px: { xs: 0.5, sm: 1 },
+                      '& .MuiButton-startIcon': {
+                        marginRight: { xs: 2, sm: 4 }
+                      }
+                    }}
+                  >
+                    Historial
+                  </Button>
+                  <Button 
+                    variant={!showHistory && !showPrompts ? "contained" : "outlined"}
+                    size="small"
+                    onClick={() => {
+                      setShowHistory(false);
+                      setShowPrompts(false);
+                    }}
+                    startIcon={<InfoIcon fontSize="small" />}
+                    sx={{ 
+                      borderRadius: '20px',
+                      minWidth: { xs: '50px', sm: '60px' },
+                      fontSize: { xs: '0.65rem', sm: '0.75rem' },
+                      py: { xs: 0.3, sm: 0.5 },
+                      px: { xs: 0.5, sm: 1 },
+                      '& .MuiButton-startIcon': {
+                        marginRight: { xs: 2, sm: 4 }
+                      }
+                    }}
+                  >
+                    Info
+                  </Button>
+                </Box>
               </Box>
-
+              
+              <Divider sx={{ mb: 2 }} />
+              
               {showHistory ? (
                 <Box sx={{ flexGrow: 1, overflowY: 'auto' }}>
                   {chatHistory.length > 0 ? (
@@ -520,20 +669,23 @@ export default function MediChat() {
                     </Box>
                   )}
                 </Box>
+              ) : showPrompts ? (
+                <PromptChat onSelectPrompt={handleSelectPrompt} />
               ) : (
                 <Box sx={{ flexGrow: 1 }}>
-                  <Alert severity="info" sx={{ mb: 3 }}>
-                    <Typography variant="body2">
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                    <InfoIcon color="info" fontSize="small" />
+                    <Typography variant="body2" color="info.main">
                       Este chat utiliza IA para proporcionar información médica general. No sustituye la consulta con un profesional de la salud.
                     </Typography>
-                  </Alert>
+                  </Box>
                   
-                  <Typography variant="h6" gutterBottom>
+                  <Typography variant="h6" gutterBottom sx={{ mt: 3 }}>
                     Recomendaciones
                   </Typography>
                   
-                  <List>
-                    <ListItem>
+                  <List sx={{ pl: 0 }}>
+                    <ListItem sx={{ px: 0 }}>
                       <ListItemAvatar>
                         <Avatar sx={{ bgcolor: theme.palette.primary.main }}>1</Avatar>
                       </ListItemAvatar>
@@ -542,7 +694,7 @@ export default function MediChat() {
                         secondary="Describe tus síntomas con detalle para obtener mejores respuestas" 
                       />
                     </ListItem>
-                    <ListItem>
+                    <ListItem sx={{ px: 0 }}>
                       <ListItemAvatar>
                         <Avatar sx={{ bgcolor: theme.palette.primary.main }}>2</Avatar>
                       </ListItemAvatar>
@@ -551,7 +703,7 @@ export default function MediChat() {
                         secondary="Incluye información relevante como edad, género y condiciones previas" 
                       />
                     </ListItem>
-                    <ListItem>
+                    <ListItem sx={{ px: 0 }}>
                       <ListItemAvatar>
                         <Avatar sx={{ bgcolor: theme.palette.primary.main }}>3</Avatar>
                       </ListItemAvatar>
@@ -567,15 +719,43 @@ export default function MediChat() {
           </Grid>
         </Grid>
 
+        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, my: { xs: 2, sm: 3 } }}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<ChatIcon />}
+            onClick={startNewChat}
+            sx={{ 
+              borderRadius: '20px', 
+              px: { xs: 2, sm: 3 },
+              py: { xs: 0.5, sm: 1 },
+              fontSize: { xs: '0.8rem', sm: '0.9rem' },
+              backgroundColor: '#1976d2',
+              '&:hover': {
+                backgroundColor: '#0d47a1'
+              }
+            }}
+          >
+            NUEVA CONSULTA
+          </Button>
+        </Box>
+
         {/* Información adicional */}
-        <Paper elevation={1} sx={{ mt: 12, p: 3, borderRadius: 2 }}>
-          <Typography variant="h6" gutterBottom>
+        <Paper elevation={1} sx={{ 
+          p: { xs: 2, sm: 3 }, 
+          borderRadius: 2,
+          mt: { xs: 2, sm: 3, md: 4 },
+          mb: { xs: 2, sm: 0 },
+          backgroundColor: '#ffffff',
+          border: '1px solid #e0e0e0'
+        }}>
+          <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>
             Acerca de MediChat
           </Typography>
-          <Typography variant="body2" paragraph>
+          <Typography variant="body2" paragraph sx={{ fontSize: { xs: '0.8rem', sm: '0.9rem' } }}>
             MediChat utiliza inteligencia artificial avanzada para proporcionar información médica general y orientativa. Esta herramienta está diseñada como un recurso educativo y de asistencia, no como un sustituto del diagnóstico médico profesional.
           </Typography>
-          <Typography variant="body2">
+          <Typography variant="body2" sx={{ fontSize: { xs: '0.8rem', sm: '0.9rem' } }}>
             Siempre consulte con un médico o profesional de la salud para un diagnóstico preciso y un plan de tratamiento adecuado.
           </Typography>
         </Paper>
