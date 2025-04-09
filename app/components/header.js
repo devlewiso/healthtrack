@@ -4,7 +4,9 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, Button, IconButton, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Link from 'next/link'; // Importa Link de next/link
+
 import '../styles/Header.css'; // Asegúrate de que la ruta sea correcta
+=======
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -18,7 +20,7 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="sticky" color="primary">
+    <AppBar position="sticky" color="primary" suppressHydrationWarning>
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           {/* Usa el componente Link en lugar de un elemento <a> */}

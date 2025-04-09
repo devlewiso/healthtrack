@@ -61,8 +61,10 @@
     font-weight: 800; /* Grosor de fuente */
     margin: 0; /* Sin margen */
     background: linear-gradient(120deg, var(--primary-color), var(--secondary-color)); /* Degradado de fondo */
-    -webkit-background-clip: text; /* Clip de fondo para el texto */
+    -webkit-background-clip: text; /* Clip de fondo para el texto (WebKit) */
+    background-clip: text; /* Propiedad estándar para compatibilidad con todos los navegadores */
     -webkit-text-fill-color: transparent; /* Relleno del texto transparente */
+    color: transparent; /* Fallback para navegadores que no soportan -webkit-text-fill-color */
 }
 
 /* Estilos para el formulario de chat */
@@ -151,6 +153,92 @@
     font-size: 1rem; /* Tamaño de fuente */
 }
 
+/* Estilos para las respuestas del chat */
+.chat-response {
+    padding: 1.2rem;
+    border-radius: var(--border-radius);
+    background-color: var(--background-light);
+    border-left: 4px solid var(--primary-color);
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilos para elementos de markdown en las respuestas */
+.chat-response h1, 
+.chat-response h2, 
+.chat-response h3, 
+.chat-response h4 {
+    color: var(--primary-dark);
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.chat-response h1 {
+    font-size: 1.5rem;
+    border-bottom: 1px solid var(--primary-light);
+    padding-bottom: 0.3rem;
+}
+
+.chat-response h2 {
+    font-size: 1.3rem;
+}
+
+.chat-response h3 {
+    font-size: 1.1rem;
+}
+
+.chat-response p {
+    margin-bottom: 0.8rem;
+}
+
+/* Estilos para listas en las respuestas */
+.chat-response ul, 
+.chat-response ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.chat-response li {
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.chat-response ul li::before {
+    content: "•";
+    color: var(--primary-color);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+/* Estilos para texto en negrita */
+.chat-response strong {
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+/* Estilos para citas o bloques de texto destacados */
+.chat-response blockquote {
+    border-left: 3px solid var(--primary-light);
+    padding-left: 1rem;
+    margin-left: 0;
+    margin-right: 0;
+    font-style: italic;
+    color: var(--text-secondary);
+}
+
+/* Estilos para recordatorios o notas importantes */
+.chat-response .reminder {
+    background-color: rgba(33, 150, 243, 0.1);
+    border: 1px solid var(--primary-light);
+    border-radius: var(--border-radius);
+    padding: 0.8rem;
+    margin: 1rem 0;
+    font-style: italic;
+}
+
 /* Animaciones */
 @keyframes fadeIn {
     from {
@@ -185,6 +273,22 @@
 
     .chat-input {
         font-size: 0.9rem; /* Tamaño de fuente reducido para entradas en pantallas pequeñas */
+    }
+
+    .chat-response {
+        padding: 1rem;
+    }
+    
+    .chat-response h1 {
+        font-size: 1.3rem;
+    }
+    
+    .chat-response h2 {
+        font-size: 1.1rem;
+    }
+    
+    .chat-response h3 {
+        font-size: 1rem;
     }
 }
 
