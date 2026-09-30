@@ -1,0 +1,15 @@
+// Sitio Next.js exportado como estático (output: export) y servido por Cloudflare Workers (migrado desde Netlify).
+// Deploy: npx wrangler deploy (corre el build antes de subir)
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "healthtrackfit",
+  "compatibility_date": "2026-09-01",
+  "build": { "command": "npm run build" },
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  },
+  "routes": [
+    { "pattern": "healthtrackfit.neuralcodelab.com", "custom_domain": true }
+  ]
+}
